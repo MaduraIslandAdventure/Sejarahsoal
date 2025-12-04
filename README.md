@@ -1,2 +1,0 @@
-# Sejarah.io
-web interaktif

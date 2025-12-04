@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Sejarah Analisis (50 Soal HOTS)</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Gaya Kustom untuk tampilan profesional */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f9;
+        }
+        /* Scrollbar Kustom */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #a5b4fc;
+            border-radius: 20px;
+        }
+        /* Menghapus Animasi Transisi untuk tampilan yang Kaku dan mengatasi flicker */
+        .no-animation, .no-animation * {
+            transition: none !important;
+            animation: none !important;
+        }
+        /* Gaya Kustom untuk feedback Benar/Salah (True/False) */
+        .tf-correct {
+            background-color: #10b981 !important; /* Tailwind green-500 */
+            color: white !important;
+        }
+        .tf-wrong {
+            background-color: #ef4444 !important; /* Tailwind red-500 */
+            color: white !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div id="app" class="flex flex-col items-center p-4">
+        <div class="w-full max-w-3xl bg-white rounded-2xl shadow-xl overflow-hidden min-h-[80vh]">
+            
+            <!-- Header -->
+            <div class="bg-indigo-600 p-4 md:p-6 text-white shrink-0 flex justify-between items-center shadow-md z-10">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white/20 p-2 rounded-lg">
+                        <i data-lucide="book-open" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg md:text-xl font-bold leading-tight">Ujian Sejarah Pro (50 Soal)</h1>
+                        <p class="text-xs md:text-sm text-indigo-100 opacity-90">Literasi & Analisis Metodologi Sejarah</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <div id="score-display" class="text-2xl font-bold">0</div>
+                    <div class="text-xs opacity-80">Poin Saat Ini</div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div id="content-area" class="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar">
+                <!-- Konten Quiz akan disuntikkan di sini oleh JavaScript -->
+            </div>
+
+            <!-- Footer Actions -->
+            <div id="footer-actions" class="bg-white p-4 border-t border-gray-100 shrink-0 flex justify-end">
+                <!-- Tombol aksi akan disuntikkan di sini -->
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Data Soal (50 Soal) - Dihilangkan untuk brevity, namun sama dengan yang sebelumnya.
+        const questions = [
+            // --- KISI 1: Definisi Sejarah (Tokoh) ---
+            {
+                id: 1, type: 'single', category: 'Konsep Dasar', 
+                question: "Kuntowijoyo menyatakan bahwa sejarah bersifat empiris. Mengapa tulisan fiksi sejarah yang menambahkan naga terbang sebagai kendaraan Gajah Mada tidak bisa dikategorikan sebagai sejarah menurut pandangan Kuntowijoyo?",
+                options: [{ id: 'a', text: "Karena tidak ditulis secara kronologis." }, { id: 'b', text: "Karena tidak bersandar pada pengalaman manusia yang sungguh terjadi (fakta empiris)." }, { id: 'c', text: "Karena tidak memiliki objek penelitian yang jelas." }, { id: 'd', text: "Karena menggunakan bahasa yang terlalu puitis." }],
+                correct: ['b'], explanation: "Empiris artinya berdasarkan pengalaman nyata. Naga terbang adalah fiksi/mitos, bukan fakta empiris yang dialami manusia."
+            },
+            {
+                id: 2, type: 'multiple', category: 'Konsep Dasar', 
+                question: "Ibnu Khaldun menjelaskan faktor-faktor yang menyebabkan runtuhnya sebuah peradaban. Pilihlah DUA faktor utama penyebab keruntuhan menurut Ibnu Khaldun di bawah ini:",
+                options: [{ id: 'a', text: "Hilangnya solidaritas sosial (Ashabiyah)." }, { id: 'b', text: "Serangan wabah penyakit menular." }, { id: 'c', text: "Gaya hidup bermewah-mewahan para penguasa." }, { id: 'd', text: "Kurangnya teknologi militer modern." }],
+                correct: ['a', 'c'], explanation: "Ibnu Khaldun menekankan pada faktor internal sosiologis: luntur Asabiyah dan hedonisme elit."
+            },
+            {
+                id: 3, type: 'single', category: 'Konsep Dasar', 
+                question: "Herodotus mengibarkan sejarah bergerak seperti garis lingkaran. Pandangan ini menekankan bahwa nasib peradaban ditentukan oleh...",
+                options: [{ id: 'a', text: "Solidaritas sosial yang terus meningkat." }, { id: 'b', text: "Siklus alam dan takdir yang berulang." }, { id: 'c', text: "Kemajuan teknologi yang linier." }, { id: 'd', text: "Kehendak bebas individu." }],
+                correct: ['b'], explanation: "Pandangan Herodotus bersifat siklis, melihat sejarah sebagai pengulangan nasib."
+            },
+
+            // --- KISI 2: Ilmu Bantu Sejarah ---
+            {
+                id: 4, type: 'truefalse', category: 'Ilmu Bantu', 
+                question: "Tentukan Benar atau Salah mengenai kegunaan ilmu bantu sejarah berikut:",
+                statements: [
+                    { text: "Epigrafi digunakan untuk membaca naskah kuno yang ditulis di atas kertas/lontar.", isTrue: false }, // Salah
+                    { text: "Ikonografi membantu menafsirkan makna patung atau arca.", isTrue: true },
+                    { text: "Paleografi mempelajari jenis-jenis tulisan kuno (seperti aksara Pallawa).", isTrue: true }
+                ],
+                explanation: "Epigrafi khusus untuk prasasti (benda keras). Naskah kertas/lontar dipelajari Filologi. Paleografi adalah studi tentang tulisan-tulisan kuno."
+            },
+            {
+                id: 5, type: 'single', category: 'Ilmu Bantu', 
+                question: "Seorang peneliti menemukan tulang belulang manusia purba di Sangiran. Untuk mengetahui usia tulang tersebut secara akurat menggunakan metode Carbon-14 (C-14), peneliti membutuhkan bantuan ilmu...",
+                options: [{ id: 'a', text: "Numismatik" }, { id: 'b', text: "Linguistik" }, { id: 'c', text: "Geologi/Kimia" }, { id: 'd', text: "Heraldik" }],
+                correct: ['c'], explanation: "Metode Carbon-14 adalah teknik penanggalan radiometrik yang merupakan aplikasi dari ilmu Kimia/Fisika nuklir."
+            },
+
+            // --- KISI 3: Cara Berpikir (Diakronis/Sinkronis/Periodisasi/Kronologi) ---
+            {
+                id: 6, type: 'multiple', category: 'Cara Berpikir', 
+                question: "Manakah dari pernyataan berikut yang merupakan contoh cara berpikir DIAKRONIS (Memanjang dalam waktu)? (Pilih lebih dari satu)",
+                options: [{ id: 'a', text: "Sejarah Pergerakan Nasional dari 1908 hingga 1945." }, { id: 'b', text: "Suasana pembacaan naskah Proklamasi 17 Agustus 1945." }, { id: 'c', text: "Evolusi sistem pendidikan di Indonesia dari masa kolonial hingga reformasi." }, { id: 'd', text: "Struktur birokrasi pemerintahan kolonial Belanda tahun 1900." }],
+                correct: ['a', 'c'], explanation: "Pilihan A dan C menunjukkan proses perubahan/perkembangan sepanjang waktu (Time-oriented), ciri khas Diakronis."
+            },
+            {
+                id: 7, type: 'single', category: 'Cara Berpikir', 
+                question: "Perhatikan judul penelitian: 'Dampak Depresi Ekonomi 1930 terhadap Kehidupan Buruh Perkebunan di Deli Serdang'. Pendekatan ini lebih condong pada...",
+                options: [{ id: 'a', text: "Diakronis" }, { id: 'b', text: "Sinkronis" }, { id: 'c', text: "Anakronis" }, { id: 'd', text: "Kronologi" }],
+                correct: ['b'], explanation: "Fokus pada struktur sosial dan ekonomi secara mendalam pada satu periode waktu yang sempit adalah ciri Sinkronis."
+            },
+            {
+                id: 8, type: 'truefalse', category: 'Cara Berpikir', 
+                question: "Benar atau Salah tentang pentingnya Kronologi:",
+                statements: [
+                    { text: "Kronologi (urutan waktu) sangat penting untuk menghindari anakronisme.", isTrue: true },
+                    { text: "Periodisasi bertujuan untuk menyulitkan pemahaman sejarah.", isTrue: false }, // Salah
+                    { text: "Setiap sejarawan memiliki hak untuk membuat periodisasi yang berbeda.", isTrue: true }
+                ],
+                explanation: "Periodisasi dibuat untuk memudahkan (simplifikasi). Setiap periodisasi bisa berbeda tergantung sudut pandang sejarawan."
+            },
+            {
+                id: 9, type: 'single', category: 'Cara Berpikir', 
+                question: "Kesalahan kronologis yang fatal (Anakronisme) terjadi ketika...",
+                options: [{ id: 'a', text: "Peristiwa diceritakan terlalu detail." }, { id: 'b', text: "Unsur modern dimasukkan ke masa lalu (misal: pahlawan naik sepeda motor)." }, { id: 'c', text: "Hanya menggunakan sumber lisan." }, { id: 'd', text: "Tidak ada sumber tertulis." }],
+                correct: ['b'], explanation: "Anakronisme adalah ketidaksesuaian penempatan waktu, seperti memasukkan teknologi modern ke zaman kuno."
+            },
+
+            // --- KISI 4: Ciri Sejarah sebagai Ilmu ---
+            {
+                id: 10, type: 'multiple', category: 'Sejarah sbg Ilmu', 
+                question: "Sejarah sebagai ilmu pengetahuan harus memiliki ciri-ciri ilmiah. Pilihlah TIGA ciri sejarah sebagai ilmu:",
+                options: [{ id: 'a', text: "Empiris (Berdasarkan pengalaman)." }, { id: 'b', text: "Subjektif Mutlak (Tergantung imajinasi)." }, { id: 'c', text: "Memiliki Metode (Sistematis)." }, { id: 'd', text: "Memiliki Objek (Manusia dalam waktu)." }],
+                correct: ['a', 'c', 'd'], explanation: "Ciri ilmiah sejarah: Empiris, Memiliki Objek, Memiliki Teori, Memiliki Metode, dan Generalisasi."
+            },
+
+            // --- KISI 5: Menentukan Tema ---
+            {
+                id: 11, type: 'single', category: 'Tema Penelitian', 
+                question: "Rara adalah mahasiswa kedokteran yang memilih topik 'Penanganan Wabah Pes di Malang tahun 1911'. Ia memilih tema ini karena ia merasa mampu memahami istilah medis dan laporan kesehatan kolonial. Pemilihan tema ini didasarkan pada...",
+                options: [{ id: 'a', text: "Kedekatan Emosional" }, { id: 'b', text: "Kedekatan Intelektual" }, { id: 'c', text: "Ketersediaan Dana" }, { id: 'd', text: "Kedekatan Geografis" }],
+                correct: ['b'], explanation: "Kedekatan Intelektual adalah kemampuan peneliti menguasai topik karena latar belakang keilmuan atau keahliannya."
+            },
+            {
+                id: 12, type: 'multiple', category: 'Tema Penelitian', 
+                question: "Pilihlah DUA syarat topik penelitian yang baik:",
+                options: [{ id: 'a', text: "Unik (ada kebaruan)." }, { id: 'b', text: "Fiktif (hasil imajinasi)." }, { id: 'c', text: "Bernilai (penting bagi ilmu/masyarakat)." }, { id: 'd', text: "Terlalu umum dan luas." }],
+                correct: ['a', 'c'], explanation: "Topik harus unik (belum banyak diteliti), bernilai, dan faktual (tidak fiktif)."
+            },
+
+            // --- KISI 6: Fakta Sejarah ---
+            {
+                id: 13, type: 'truefalse', category: 'Fakta Sejarah', 
+                question: "Analisis pernyataan berikut mengenai jenis fakta sejarah:",
+                statements: [
+                    { text: "'Indonesia merdeka pada tanggal 17 Agustus 1945' adalah contoh Fakta Keras.", isTrue: true },
+                    { text: "Fakta Mental adalah kondisi kejiwaan atau pemikiran yang melandasi suatu peristiwa.", isTrue: true },
+                    { text: "Pernyataan 'Semangat juang Tentara PETA saat melawan Jepang sangat tinggi' adalah contoh Fakta Lunak.", isTrue: true }
+                ],
+                explanation: "Fakta Keras (pasti). Fakta Mental (abstrak, pikiran). Fakta Lunak (butuh interpretasi dan verifikasi lebih lanjut)."
+            },
+            {
+                id: 14, type: 'single', category: 'Fakta Sejarah', 
+                question: "Bukti fisik peninggalan masa lalu yang berwujud material seperti candi, keris, atau fosil, dikategorikan sebagai...",
+                options: [{ id: 'a', text: "Fakta Mental" }, { id: 'b', text: "Fakta Sosial" }, { id: 'c', text: "Fakta Benda (Artefak)" }, { id: 'd', text: "Fakta Historis" }],
+                correct: ['c'], explanation: "Candi dan keris adalah Fakta Benda (Artefak)."
+            },
+
+            // --- KISI 7: Langkah Penelitian (Kunto) ---
+            {
+                id: 15, type: 'single', category: 'Metode Penelitian', 
+                question: "Tahap penelitian sejarah di mana sejarawan menafsirkan makna dari fakta-fakta yang telah lolos kritik, kemudian merangkainya menjadi satu cerita yang logis, disebut...",
+                options: [{ id: 'a', text: "Verifikasi" }, { id: 'b', text: "Interpretasi" }, { id: 'c', text: "Heuristik" }, { id: 'd', text: "Historiografi" }],
+                correct: ['b'], explanation: "Interpretasi adalah tahap penafsiran (Analisis dan Sintesis)."
+            },
+            {
+                id: 16, type: 'multiple', category: 'Metode Penelitian', 
+                question: "Tahap VERIFIKASI dalam penelitian sejarah dibagi menjadi dua. Sebutkan DUA jenis verifikasi tersebut:",
+                options: [{ id: 'a', text: "Kritik Intern" }, { id: 'b', text: "Kritik Ekstern" }, { id: 'c', text: "Analisis Data" }, { id: 'd', text: "Sintesis Data" }],
+                correct: ['a', 'b'], explanation: "Verifikasi terdiri dari Kritik Ekstern (otentisitas/keaslian) dan Kritik Intern (kredibilitas/isi)."
+            },
+            {
+                id: 17, type: 'single', category: 'Metode Penelitian', 
+                question: "Langkah terakhir dalam penelitian sejarah, di mana sejarawan menuangkan hasil analisisnya dalam bentuk tulisan (buku, jurnal, dll), adalah...",
+                options: [{ id: 'a', text: "Heuristik" }, { id: 'b', text: "Verifikasi" }, { id: 'c', text: "Interpretasi" }, { id: 'd', text: "Historiografi" }],
+                correct: ['d'], explanation: "Historiografi adalah tahap penulisan sejarah."
+            },
+
+            // --- KISI 8: Jenis Verifikasi ---
+            {
+                id: 18, type: 'single', category: 'Verifikasi', 
+                question: "Seorang peneliti memeriksa jenis kertas, tinta, dan stempel pada sebuah surat kuno untuk memastikan bahwa surat tersebut ASLI dari zaman yang diklaim. Tindakan ini adalah...",
+                options: [{ id: 'a', text: "Kritik Intern" }, { id: 'b', text: "Kritik Ekstern" }, { id: 'c', text: "Koroborasi" }, { id: 'd', text: "Observasi" }],
+                correct: ['b'], explanation: "Kritik Ekstern menguji otentisitas (keaslian fisik)."
+            },
+            {
+                id: 19, type: 'single', category: 'Verifikasi', 
+                question: "Peneliti membandingkan isi surat yang didapatkan dengan laporan resmi dari Belanda dan kesaksian lisan untuk memastikan kebenaran informasinya. Tindakan ini adalah...",
+                options: [{ id: 'a', text: "Kritik Ekstern" }, { id: 'b', text: "Kritik Intern" }, { id: 'c', text: "Reinterpretasi" }, { id: 'd', text: "Eksplorasi" }],
+                correct: ['b'], explanation: "Kritik Intern menguji kredibilitas (kebenaran isi)."
+            },
+
+            // --- KISI 9: Jenis Historiografi ---
+            {
+                id: 20, type: 'truefalse', category: 'Historiografi', 
+                question: "Tentukan kebenaran ciri-ciri Historiografi berikut:",
+                statements: [
+                    { text: "Historiografi Kolonial bersifat Neerlandosentris.", isTrue: true },
+                    { text: "Historiografi Tradisional cenderung Istana-sentris.", isTrue: true },
+                    { text: "Historiografi Modern menekankan peran masyarakat biasa (sejarah dari bawah).", isTrue: true }
+                ],
+                explanation: "Ketiga pernyataan adalah ciri khas masing-masing jenis historiografi. Modern fokus pada rakyat kecil (sejarah dari bawah)."
+            },
+            {
+                id: 21, type: 'single', category: 'Historiografi', 
+                question: "Ciri historiografi yang bertujuan untuk melegitimasi (mengabsahkan) kekuasaan raja dengan mencampurkan fakta dan mitos adalah...",
+                options: [{ id: 'a', text: "Modern" }, { id: 'b', text: "Tradisional" }, { id: 'c', text: "Kolonial" }, { id: 'd', text: "Universal" }],
+                correct: ['b'], explanation: "Historiografi tradisional bertujuan untuk mengabsahkan kekuasaan raja, seringkali dengan unsur mitos."
+            },
+
+            // --- KISI 10: Kendala Sumber Sejarah ---
+            {
+                id: 22, type: 'multiple', category: 'Kendala Sumber', 
+                question: "Kendala utama yang harus diwaspadai peneliti saat menggunakan sumber lisan (wawancara) adalah:",
+                options: [{ id: 'a', text: "Informan cenderung subjektif." }, { id: 'b', text: "Keterbatasan daya ingat informan." }, { id: 'c', text: "Sulitnya menemukan lokasi wawancara." }, { id: 'd', text: "Informan sering melebih-lebihkan perannya." }],
+                correct: ['a', 'b', 'd'], explanation: "Kendala lisan adalah masalah memori (lupa) dan bias pribadi (subjektif/melebih-lebihkan)."
+            },
+
+            // --- KISI 11: Manusia, Ruang, Waktu (Konsep Waktu) ---
+            {
+                id: 23, type: 'single', category: 'Konsep Waktu', 
+                question: "Masyarakat Indonesia masih melakukan tradisi mudik lebaran dari masa sebelum kemerdekaan hingga kini. Meskipun alat transportasinya berubah, tradisinya tetap ada. Ini adalah contoh konsep waktu...",
+                options: [{ id: 'a', text: "Perubahan" }, { id: 'b', text: "Kesinambungan" }, { id: 'c', text: "Pengulangan" }, { id: 'd', text: "Siklus" }],
+                correct: ['b'], explanation: "Kesinambungan (Continuity) terjadi ketika pola lama masih dipertahankan/diadopsi oleh masyarakat baru."
+            },
+            {
+                id: 24, type: 'multiple', category: 'Konsep Waktu', 
+                question: "Faktor INTERNAL (dari dalam masyarakat) yang mendorong terjadinya perubahan sosial:",
+                options: [{ id: 'a', text: "Peperangan dengan negara lain." }, { id: 'b', text: "Penemuan-penemuan baru (Inovasi)." }, { id: 'c', text: "Konflik dan Revolusi dalam masyarakat." }, { id: 'd', text: "Pengaruh budaya asing." }],
+                correct: ['b', 'c'], explanation: "Inovasi dan Konflik/Revolusi adalah pendorong dari dalam. Peperangan dan Budaya Asing adalah eksternal."
+            },
+
+            // --- KISI 12: Manusia Objek/Subjek ---
+            {
+                id: 25, type: 'single', category: 'Manusia', 
+                question: "Dalam peristiwa Sumpah Pemuda, tokoh-tokoh seperti Mohammad Yamin dan Soegondo Djojopoespito berperan sebagai...",
+                options: [{ id: 'a', text: "Objek Sejarah" }, { id: 'b', text: "Subjek Sejarah" }, { id: 'c', text: "Penulis Sejarah" }, { id: 'd', text: "Korban Sejarah" }],
+                correct: ['b'], explanation: "Subjek Sejarah adalah manusia sebagai pelaku aktif (aktor) yang menentukan jalannya peristiwa."
+            },
+            {
+                id: 26, type: 'truefalse', category: 'Manusia', 
+                question: "Peran manusia dalam sejarah:",
+                statements: [
+                    { text: "Ketika kisah Gajah Mada dikaji di sekolah, Gajah Mada berposisi sebagai Objek Sejarah.", isTrue: true },
+                    { text: "Manusia adalah makhluk yang hanya pasif menunggu sejarah terjadi.", isTrue: false }, // Salah
+                    { text: "Sejarah tanpa manusia hanya akan menjadi sejarah alam (natural history).", isTrue: true }
+                ],
+                explanation: "Manusia adalah pelaku aktif (tidak pasif) dan objek kajian utama sejarah."
+            },
+
+            // --- KISI 13: Sumber Sejarah ---
+            {
+                id: 27, type: 'single', category: 'Sumber Sejarah', 
+                question: "Dokumen-dokumen asli yang berasal langsung dari zaman kejadian, seperti naskah Proklamasi yang diketik, dikategorikan sebagai...",
+                options: [{ id: 'a', text: "Sumber Sekunder" }, { id: 'b', text: "Sumber Tersier" }, { id: 'c', text: "Sumber Primer" }, { id: 'd', text: "Sumber Lisan" }],
+                correct: ['c'], explanation: "Sumber Primer adalah sumber yang sezaman dengan peristiwa."
+            },
+            {
+                id: 28, type: 'multiple', category: 'Sumber Sejarah', 
+                question: "Pilihlah DUA contoh Sumber Sekunder:",
+                options: [{ id: 'a', text: "Buku Teks Sejarah Indonesia kelas X." }, { id: 'b', text: "Wawancara dengan veteran perang (Pelaku)." }, { id: 'c', text: "Jurnal Penelitian yang membahas Perang Diponegoro." }, { id: 'd', text: "Prasasti peninggalan Kerajaan Tarumanegara." }],
+                correct: ['a', 'c'], explanation: "Buku teks dan Jurnal adalah hasil tulisan/analisis yang dibuat setelah peristiwa (Sumber Sekunder). Wawancara veteran dan Prasasti adalah Primer."
+            },
+            
+            // --- Soal 29-50 (Campuran dan Variasi) ---
+            
+            // 29. KISI 3 (Kronologi/Periodisasi)
+            {
+                id: 29, type: 'single', category: 'Cara Berpikir', 
+                question: "Tujuan utama pembabakan waktu dalam sejarah (Periodisasi) adalah...",
+                options: [{ id: 'a', text: "Untuk menemukan semua sumber sejarah." }, { id: 'b', text: "Untuk membuat sejarah lebih mudah dipahami dan dikelompokkan." }, { id: 'c', text: "Untuk menghilangkan unsur mitos dari sejarah." }, { id: 'd', text: "Untuk selalu menggunakan pendekatan sinkronis." }],
+                correct: ['b'], explanation: "Periodisasi bertujuan untuk menyederhanakan dan mengelompokkan waktu agar mudah dipahami."
+            },
+            
+            // 30. KISI 4 (Ciri Ilmu)
+            {
+                id: 30, type: 'multiple', category: 'Sejarah sbg Ilmu', 
+                question: "Mengapa sejarah memerlukan ilmu bantu (seperti Arkeologi, Sosiologi, dll.)? (Pilih dua)",
+                options: [{ id: 'a', text: "Karena sejarah bersifat multidimensional." }, { id: 'b', text: "Karena sejarawan tidak mampu menganalisis sumber benda." }, { id: 'c', text: "Untuk memperkaya dan mempertajam analisis (interdisipliner)." }, { id: 'd', text: "Agar terlihat lebih keren." }],
+                correct: ['a', 'c'], explanation: "Ilmu bantu diperlukan karena sejarah mencakup berbagai aspek kehidupan (multidimensional) yang membutuhkan alat analisis dari ilmu lain."
+            },
+
+            // 31. KISI 6 (Fakta)
+            {
+                id: 31, type: 'single', category: 'Fakta Sejarah', 
+                question: "Konsep pemikiran 'Rakyat Indonesia harus merdeka' yang ada di benak para pendiri bangsa termasuk jenis fakta...",
+                options: [{ id: 'a', text: "Fakta Benda" }, { id: 'b', text: "Fakta Sosial" }, { id: 'c', text: "Fakta Mental" }, { id: 'd', text: "Fakta Keras" }],
+                correct: ['c'], explanation: "Pemikiran, ideologi, semangat, dan kondisi kejiwaan termasuk Fakta Mental (abstrak)."
+            },
+
+            // 32. KISI 10 (Kendala)
+            {
+                id: 32, type: 'truefalse', category: 'Kendala Sumber', 
+                question: "Kendala sumber benda dan arsip:",
+                statements: [
+                    { text: "Arsip rentan terhadap kerusakan fisik (rayap, air, api).", isTrue: true },
+                    { text: "Artefak (benda) selalu menyajikan informasi yang eksplisit dan jelas.", isTrue: false }, // Salah
+                    { text: "Kendala utama arsip adalah kurangnya objektivitas.", isTrue: false }
+                ],
+                explanation: "Artefak (benda) seringkali 'bisu' (informasinya implisit) sehingga butuh interpretasi tajam. Kendala objektivitas lebih ke sumber lisan/tertulis yang bias."
+            },
+
+            // 33. KISI 7 (Langkah)
+            {
+                id: 33, type: 'single', category: 'Metode Penelitian', 
+                question: "Bila sejarawan selesai melakukan verifikasi dan fakta sudah terkumpul, langkah selanjutnya adalah...",
+                options: [{ id: 'a', text: "Membuat buku (Historiografi)." }, { id: 'b', text: "Mencari sumber baru lagi (Heuristik)." }, { id: 'c', text: "Menafsirkan makna fakta (Interpretasi)." }, { id: 'd', text: "Mengabaikan fakta yang bertentangan." }],
+                correct: ['c'], explanation: "Urutan: Heuristik -> Verifikasi -> Interpretasi -> Historiografi."
+            },
+
+            // 34. KISI 8 (Verifikasi)
+            {
+                id: 34, type: 'multiple', category: 'Verifikasi', 
+                question: "Pilihlah DUA pertanyaan yang diajukan saat melakukan Kritik Intern:",
+                options: [{ id: 'a', text: "Apakah sumber ini asli (otentik)? " }, { id: 'b', text: "Apakah penulisnya jujur? " }, { id: 'c', text: "Apakah isinya dapat dipercaya (kredibel)? " }, { id: 'd', text: "Apakah bahannya sesuai dengan zaman? " }],
+                correct: ['b', 'c'], explanation: "Kritik Intern fokus pada isi: kredibilitas dan kejujuran penulis/saksi."
+            },
+
+            // 35. KISI 9 (Historiografi)
+            {
+                id: 35, type: 'single', category: 'Historiografi', 
+                question: "Peralihan dari penulisan sejarah yang Istana-sentris ke Rakyat-sentris dalam Historiografi Nasional disebut...",
+                options: [{ id: 'a', text: "Neerlandosentrisme" }, { id: 'b', text: "Indonesiasentrisme" }, { id: 'c', text: "Global History" }, { id: 'd', text: "Anakronisme" }],
+                correct: ['b'], explanation: "Indonesiasentrisme adalah penulisan sejarah dari sudut pandang kepentingan Indonesia, bukan Belanda."
+            },
+
+            // 36. KISI 11 (Perubahan)
+            {
+                id: 36, type: 'multiple', category: 'Konsep Waktu', 
+                question: "Pilihlah DUA contoh konsep 'Pengulangan' dalam sejarah (pola yang mirip):",
+                options: [{ id: 'a', text: "Setiap presiden menjabat 5 tahun sekali." }, { id: 'b', text: "Munculnya Ratu Adil setelah masa paceklik." }, { id: 'c', text: "Pola jatuhnya kekuasaan otoriter karena krisis ekonomi dan demo." }, { id: 'd', text: "Hukum alam yang konstan." }],
+                correct: ['b', 'c'], explanation: "Pengulangan adalah pola fenomena sosial (seperti pola krisis/ratu adil) yang terjadi di waktu berbeda."
+            },
+
+            // 37. KISI 13 (Sumber)
+            {
+                id: 37, type: 'single', category: 'Sumber Sejarah', 
+                question: "Mengapa sumber lisan dianggap penting meskipun memiliki kelemahan subjektivitas?",
+                options: [{ id: 'a', text: "Karena sumber lisan selalu objektif." }, { id: 'b', text: "Karena mampu mengungkap Fakta Mental (perasaan, motivasi) yang tidak ada di arsip." }, { id: 'c', text: "Karena sumber lisan tidak perlu diverifikasi." }, { id: 'd', text: "Karena semua arsip telah musnah." }],
+                correct: ['b'], explanation: "Sumber lisan sangat unggul dalam mengungkap aspek emosi, motivasi, dan perasaan pelaku/saksi (Fakta Mental)."
+            },
+
+            // 38. KISI 1 (Tokoh)
+            {
+                id: 38, type: 'single', category: 'Konsep Dasar', 
+                question: "Tokoh yang memandang bahwa 'perjalanan sejarah akan berakhir di suatu titik puncak kebahagiaan (linear) dan kemajuan yang terus menerus' adalah...",
+                options: [{ id: 'a', text: "Herodotus" }, { id: 'b', text: "Ibnu Khaldun" }, { id: 'c', text: "Augustine/Konsep Barat" }, { id: 'd', text: "Kuntowijoyo" }],
+                correct: ['c'], explanation: "Pandangan linier (sejarah menuju tujuan akhir) sangat dipengaruhi konsep teologis Barat (Augustine)."
+            },
+            
+            // 39. KISI 2 (Ilmu Bantu)
+            {
+                id: 39, type: 'truefalse', category: 'Ilmu Bantu', 
+                question: "Kegunaan ilmu bantu:",
+                statements: [
+                    { text: "Numismatik diperlukan untuk meneliti koin Kerajaan Samudera Pasai.", isTrue: true },
+                    { text: "Linguistik membantu sejarawan memahami tata bahasa surat-surat Kartini.", isTrue: true },
+                    { text: "Arkeologi adalah ilmu yang mempelajari binatang purba.", isTrue: false }
+                ],
+                explanation: "Arkeologi adalah ilmu benda purbakala buatan manusia. Paleontologi mempelajari kehidupan/binatang purba."
+            },
+
+            // 40. KISI 7 (Langkah)
+            {
+                id: 40, type: 'multiple', category: 'Metode Penelitian', 
+                question: "Pilihlah langkah-langkah yang termasuk dalam tahap Heuristik:",
+                options: [{ id: 'a', text: "Mengunjungi Arsip Nasional." }, { id: 'b', text: "Melakukan wawancara dengan saksi mata." }, { id: 'c', text: "Mengecek keaslian stempel dokumen." }, { id: 'd', text: "Menulis bab pertama buku." }],
+                correct: ['a', 'b'], explanation: "Heuristik adalah tahap pengumpulan sumber. Mengecek keaslian adalah Verifikasi, menulis buku adalah Historiografi."
+            },
+
+            // 41. KISI 12 (Manusia)
+            {
+                id: 41, type: 'single', category: 'Manusia', 
+                question: "Apabila seorang siswa sedang membaca biografi pahlawan nasional untuk mendapatkan inspirasi, maka biografi tersebut berperan sebagai...",
+                options: [{ id: 'a', text: "Subjek Sejarah" }, { id: 'b', text: "Objek Sejarah" }, { id: 'c', text: "Sumber Primer" }, { id: 'd', text: "Fakta Mental" }],
+                correct: ['b'], explanation: "Biografi adalah bahan kajian/bacaan, sehingga pahlawan tersebut menjadi Objek Sejarah."
+            },
+
+            // 42. KISI 3 (Cara Berpikir)
+            {
+                id: 42, type: 'multiple', category: 'Cara Berpikir', 
+                question: "Ciri-ciri pokok dari ilmu sejarah:",
+                options: [{ id: 'a', text: "Diakronis" }, { id: 'b', text: "Sinkronis" }, { id: 'c', text: "Ideografis (Unik)" }, { id: 'd', text: "Nomotetis (Membuat hukum umum)" }],
+                correct: ['a', 'c'], explanation: "Ciri utama sejarah: Diakronis, Ideografis (unik), Empiris, dan Nomotetis (membuat hukum umum) adalah ciri Ilmu Sosial."
+            },
+
+            // 43. KISI 13 (Sumber)
+            {
+                id: 43, type: 'truefalse', category: 'Sumber Sejarah', 
+                question: "Sumber Benda:",
+                statements: [
+                    { text: "Fosil tulang belulang dinosaurus termasuk sumber sejarah.", isTrue: false }, // Salah
+                    { text: "Candi dan tugu monumen termasuk sumber benda.", isTrue: true },
+                    { text: "Sumber benda harus dianalisis oleh Arkeolog.", isTrue: true }
+                ],
+                explanation: "Fosil termasuk sejarah alam (natural history/Paleontologi), bukan sejarah manusia. Sumber benda perlu analisis Arkeologi."
+            },
+
+            // 44. KISI 6 (Fakta)
+            {
+                id: 44, type: 'single', category: 'Fakta Sejarah', 
+                question: "Dalam konteks G30S/PKI, Fakta Sosial yang terjadi adalah...",
+                options: [{ id: 'a', text: "Adanya korban jiwa dan perlawanan rakyat." }, { id: 'b', text: "Senjata yang digunakan tentara." }, { id: 'c', text: "Perasaan takut masyarakat saat itu." }, { id: 'd', text: "Adanya dokumen Supersemar." }],
+                correct: ['a'], explanation: "Fakta Sosial melibatkan interaksi, konflik, atau hubungan antarmanusia (korban jiwa, perlawanan)."
+            },
+
+            // 45. KISI 9 (Historiografi)
+            {
+                id: 45, type: 'multiple', category: 'Historiografi', 
+                question: "Kelemahan historiografi tradisional:",
+                options: [{ id: 'a', text: "Subjektivitas penulis sangat tinggi." }, { id: 'b', text: "Sering mencampur fakta dan mitos." }, { id: 'c', text: "Terlalu fokus pada ekonomi rakyat." }, { id: 'd', text: "Sumber sulit diverifikasi." }],
+                correct: ['a', 'b', 'd'], explanation: "Historiografi tradisional sangat subjektif, mitologis, dan sumbernya sulit dibuktikan (sulit diverifikasi)."
+            },
+
+            // 46. KISI 11 (Perubahan)
+            {
+                id: 46, type: 'single', category: 'Konsep Waktu', 
+                question: "Faktor utamanya adalah Revolusi Amerika dan Revolusi Perancis. Ini merupakan faktor pendorong perubahan dari jenis...",
+                options: [{ id: 'a', text: "Internal (Inovasi)" }, { id: 'b', text: "Eksternal (Pengaruh Budaya Asing)" }, { id: 'c', text: "Internal (Pemberontakan)" }, { id: 'd', text: "Eksternal (Peperangan)" }],
+                correct: ['b'], explanation: "Revolusi di negara lain yang memengaruhi bangsa lain termasuk Pengaruh Kebudayaan/Politik Asing (Eksternal)."
+            },
+
+            // 47. KISI 5 (Tema)
+            {
+                id: 47, type: 'truefalse', category: 'Tema Penelitian', 
+                question: "Pemilihan Topik:",
+                statements: [
+                    { text: "Tema yang baik harus memenuhi rasa ingin tahu (curiosity) peneliti.", isTrue: true },
+                    { text: "Sejarawan harus memilih topik yang ia sukai meskipun tidak ada sumbernya.", isTrue: false },
+                    { text: "Topik harus 'available' (ada sumbernya).", isTrue: true }
+                ],
+                explanation: "Meskipun suka, jika sumber tidak ada (*available*), penelitian akan gagal di tahap Heuristik."
+            },
+
+            // 48. KISI 13 (Sumber)
+            {
+                id: 48, type: 'single', category: 'Sumber Sejarah', 
+                question: "Diari pribadi seorang tokoh yang ditulis saat peristiwa bersejarah terjadi termasuk sumber...",
+                options: [{ id: 'a', text: "Primer Tertulis" }, { id: 'b', text: "Sekunder Tertulis" }, { id: 'c', text: "Primer Lisan" }, { id: 'd', text: "Benda" }],
+                correct: ['a'], explanation: "Diari ditulis sezaman (Primer) dan berbentuk tulisan (Tertulis)."
+            },
+
+            // 49. KISI 4 (Ciri Ilmu)
+            {
+                id: 49, type: 'multiple', category: 'Sejarah sbg Ilmu', 
+                question: "Pilihlah DUA faktor yang menyebabkan sejarah berbeda dengan ilmu sosial murni:",
+                options: [{ id: 'a', text: "Sejarah bersifat Ideografis (unik)." }, { id: 'b', text: "Sejarah bersifat Nomotetis (membuat hukum)." }, { id: 'c', text: "Sejarah terbatas pada ruang dan waktu (tidak general)." }, { id: 'd', text: "Sejarah tidak menggunakan metode ilmiah." }],
+                correct: ['a', 'c'], explanation: "Ilmu Sosial (Sosiologi) bersifat Nomotetis dan cenderung menggeneralisasi (tidak unik)."
+            },
+
+            // 50. KISI 8 (Verifikasi)
+            {
+                id: 50, type: 'truefalse', category: 'Verifikasi', 
+                question: "Kritik Sumber:",
+                statements: [
+                    { text: "Kesalahan Kritik Ekstern bisa terjadi jika sumber adalah palsu (forged).", isTrue: true },
+                    { text: "Kritik Intern harus dilakukan sebelum Kritik Ekstern.", isTrue: false },
+                    { text: "Tujuan Kritik Sumber adalah untuk menemukan Fakta Keras.", isTrue: true }
+                ],
+                explanation: "Kritik Ekstern harus dilakukan lebih dulu untuk memastikan sumbernya asli/otentik. Jika tidak asli, tidak perlu dicek isinya."
+            }
+        ];
+
+        // Global State
+        let currentQuestion = 0;
+        let score = 0;
+        
+        // --- NEW GLOBAL STATE: Menyimpan status jawaban semua soal secara permanen ---
+        let questionStates = questions.map(() => ({
+            selectedOptions: [], // Jawaban pilihan ganda / tunggal
+            tfAnswers: {},       // Jawaban Benar/Salah (index: boolean)
+            isAnswered: false,   // Apakah soal sudah dikunci jawabannya
+            isCorrect: false     // Apakah jawaban yang dikunci benar
+        }));
+        
+        // Temporary state (digunakan untuk pertanyaan yang belum dikunci)
+        let selectedOptions = []; 
+        let tfAnswers = {};       
+
+        const contentArea = document.getElementById('content-area');
+        const footerActions = document.getElementById('footer-actions');
+        const scoreDisplay = document.getElementById('score-display');
+
+        // --- Core Functions ---
+
+        const updateScoreDisplay = () => {
+            // Hitung ulang skor dari questionStates
+            score = questionStates.filter(state => state.isCorrect).length;
+            scoreDisplay.textContent = score;
+        };
+        
+        const loadQuestionState = () => {
+            const state = questionStates[currentQuestion];
+            if (state.isAnswered) {
+                // Jika sudah dijawab, gunakan jawaban tersimpan
+                selectedOptions = [...state.selectedOptions];
+                tfAnswers = {...state.tfAnswers};
+                renderQuestion(true, state.isCorrect);
+            } else {
+                // Jika belum dijawab, muat pilihan terakhir yang belum dikunci
+                selectedOptions = [...state.selectedOptions];
+                tfAnswers = {...state.tfAnswers};
+                renderQuestion(false);
+            }
+        };
+
+        const checkAnswer = () => {
+            const q = questions[currentQuestion];
+            const currentState = questionStates[currentQuestion];
+            let isCorrect = false;
+
+            if (q.type === 'single') {
+                isCorrect = selectedOptions[0] === q.correct[0];
+            } else if (q.type === 'multiple') {
+                const userSorted = [...selectedOptions].sort().join(',');
+                const correctSorted = [...q.correct].sort().join(',');
+                isCorrect = userSorted === correctSorted && selectedOptions.length === q.correct.length;
+            } else if (q.type === 'truefalse') {
+                let allMatch = true;
+                q.statements.forEach((st, idx) => {
+                    const userVal = tfAnswers[idx];
+                    if (userVal === undefined || userVal !== st.isTrue) allMatch = false; 
+                });
+                isCorrect = allMatch;
+            }
+            
+            // --- SIMPAN STATUS JAWABAN PERMANEN ---
+            currentState.selectedOptions = [...selectedOptions];
+            currentState.tfAnswers = {...tfAnswers};
+            currentState.isAnswered = true;
+            currentState.isCorrect = isCorrect;
+
+            updateScoreDisplay();
+            renderQuestion(true, isCorrect); 
+        };
+
+        const nextQuestion = () => {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestionState();
+            } else {
+                renderResult();
+            }
+        };
+        
+        const prevQuestion = () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestionState();
+            }
+        };
+        
+        window.prevQuestion = prevQuestion; // Expose to window for inline HTML onclick
+
+        const resetQuiz = () => {
+            currentQuestion = 0;
+            score = 0;
+            // Reset semua status jawaban
+            questionStates = questions.map(() => ({
+                selectedOptions: [], 
+                tfAnswers: {},       
+                isAnswered: false,   
+                isCorrect: false     
+            }));
+            
+            // Muat ulang state awal
+            loadQuestionState();
+            updateScoreDisplay();
+        };
+
+        // --- RENDER & UI UPDATE FUNCTIONS (Flicker Fix Core) ---
+
+        // Function to update the appearance of buttons directly (Flicker Fix)
+        const updateOptionsUI = (type) => {
+            const container = document.querySelector('.input-area-container');
+            if (!container) return; 
+
+            // Gunakan selectedOptions dan tfAnswers (state sementara) untuk rendering
+            
+            if (type === 'single' || type === 'multiple') {
+                container.querySelectorAll('button').forEach(button => {
+                    const id = button.getAttribute('data-id');
+                    const isSelected = selectedOptions.includes(id);
+
+                    // 1. Reset base classes (Hapus seleksi, kembalikan hover)
+                    button.className = button.className.replace(/bg-indigo-50|border-indigo-500|shadow-md/g, '').trim();
+                    button.className = button.className.replace(/bg-white border-gray-200 hover:border-indigo-300 hover:bg-gray-50/g, '').trim();
+                    button.className += ' bg-white border-gray-200 hover:border-indigo-300 hover:bg-gray-50';
+
+                    // 2. Apply selection class
+                    if (isSelected) {
+                        button.className = button.className.replace(/bg-white border-gray-200 hover:border-indigo-300 hover:bg-gray-50/g, '').trim();
+                        button.className += ' bg-indigo-50 border-indigo-500 shadow-md';
+                    }
+
+                    // 3. Update checkbox icon for multiple choice
+                    if (type === 'multiple') {
+                        const checkDiv = button.querySelector('.check-icon-container');
+                        if (checkDiv) {
+                            if (isSelected) {
+                                checkDiv.innerHTML = '<i data-lucide="check-square" class="w-4 h-4"></i>';
+                                checkDiv.className = checkDiv.className.replace(/border-gray-400 text-gray-500/g, '').trim();
+                                checkDiv.className += ' bg-indigo-500 border-indigo-500 text-white';
+                            } else {
+                                checkDiv.innerHTML = '<i data-lucide="square" class="w-4 h-4"></i>';
+                                checkDiv.className = checkDiv.className.replace(/bg-indigo-500 border-indigo-500 text-white/g, '').trim();
+                                checkDiv.className += ' border-gray-400 text-gray-500';
+                            }
+                        }
+                    }
+                });
+            } else if (type === 'truefalse') {
+                 container.querySelectorAll('.tf-group').forEach(group => {
+                    const idx = parseInt(group.getAttribute('data-index'));
+                    const userVal = tfAnswers[idx];
+                    
+                    const btnTrue = group.querySelector('.btn-true');
+                    const btnFalse = group.querySelector('.btn-false');
+
+                    // Reset classes
+                    btnTrue.className = 'px-4 py-2 rounded-lg font-bold no-animation bg-gray-100 hover:bg-gray-200 text-gray-600 btn-true';
+                    btnFalse.className = 'px-4 py-2 rounded-lg font-bold no-animation bg-gray-100 hover:bg-gray-200 text-gray-600 btn-false';
+
+                    // Apply selection class
+                    if (userVal === true) {
+                        btnTrue.className = 'px-4 py-2 rounded-lg font-bold no-animation bg-indigo-600 text-white btn-true';
+                    } else if (userVal === false) {
+                        btnFalse.className = 'px-4 py-2 rounded-lg font-bold no-animation bg-indigo-600 text-white btn-false';
+                    }
+                });
+            }
+             lucide.createIcons();
+             renderFooterActions(false); // Update button state (enabled/disabled)
+        };
+
+        const renderSingleChoice = (q) => {
+            return q.options.map(opt => {
+                let className = `w-full text-left p-4 rounded-xl border-2 flex justify-between items-center no-animation shadow-sm 
+                                bg-white border-gray-200 hover:border-indigo-300 hover:bg-gray-50`;
+
+                return `<button data-id="${opt.id}" onclick="handleSelection('${opt.id}', 'single')" class="${className}">
+                            <span>${opt.text}</span>
+                            <span></span>
+                        </button>`;
+            }).join('');
+        };
+
+        const renderMultiChoice = (q) => {
+            const listItems = q.options.map(opt => {
+                let className = `w-full text-left p-4 rounded-xl border-2 flex justify-between items-center no-animation
+                                bg-white border-gray-200 hover:border-indigo-300 hover:bg-gray-50`;
+                
+                return `<button data-id="${opt.id}" onclick="handleSelection('${opt.id}', 'multiple')" class="${className}">
+                            <div class="flex items-center gap-3">
+                                <div class="check-icon-container w-5 h-5 rounded border flex items-center justify-center border-gray-400 text-gray-500">
+                                    <i data-lucide="square" class="w-4 h-4"></i>
+                                </div>
+                                <span>${opt.text}</span>
+                            </div>
+                            <span></span>
+                        </button>`;
+            }).join('');
+
+            return `
+                <p class="text-sm text-indigo-600 font-semibold mb-2 flex items-center gap-2">
+                    <i data-lucide="list-checks" class="w-4 h-4"></i> Pilih Jawaban Benar (Total: ${q.correct.length})
+                </p>
+                <div class="space-y-3">${listItems}</div>
+            `;
+        };
+
+        const renderTrueFalse = (q) => {
+            const listItems = q.statements.map((st, idx) => {
+                const btnDefaultClass = 'px-4 py-2 rounded-lg font-bold no-animation bg-gray-100 hover:bg-gray-200 text-gray-600';
+                
+                return `
+                    <div class="p-4 border-b border-gray-100 last:border-0 flex flex-col md:flex-row md:items-center justify-between gap-4 tf-group" data-index="${idx}">
+                        <div class="flex-1 text-gray-800 font-medium">${st.text}</div>
+                        <div class="flex gap-2 shrink-0">
+                            <!-- Tombol BENAR -->
+                            <button onclick="handleSelection('${idx}', 'truefalse', true)" class="${btnDefaultClass} btn-true">BENAR</button>
+                            <!-- Tombol SALAH -->
+                            <button onclick="handleSelection('${idx}', 'truefalse', false)" class="${btnDefaultClass} btn-false">SALAH</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <p class="text-sm text-indigo-600 font-semibold mb-2">Tentukan Benar atau Salah untuk setiap pernyataan:</p>
+                <div class="bg-white rounded-xl border border-gray-200 overflow-hidden space-y-2">
+                    ${listItems}
+                </div>
+            `;
+        };
+
+
+        const renderQuestion = (isAnswered = false, wasCorrect) => {
+            const q = questions[currentQuestion];
+            let inputHtml = '';
+            const currentState = questionStates[currentQuestion]; // Dapatkan status permanen
+
+            if (q.type === 'single') inputHtml = renderSingleChoice(q, isAnswered);
+            else if (q.type === 'multiple') inputHtml = renderMultiChoice(q, isAnswered);
+            else if (q.type === 'truefalse') inputHtml = renderTrueFalse(q, isAnswered);
+
+            // Explanation HTML
+            let explanationHtml = '';
+            if (currentState.isAnswered) { // Gunakan status permanen untuk menampilkan feedback
+                const statusClass = currentState.isCorrect ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100';
+                const statusText = currentState.isCorrect ? 'Jawaban Benar!' : 'Jawaban Salah!';
+                const statusIcon = currentState.isCorrect ? 'check-circle' : 'x-circle';
+
+                explanationHtml = `
+                    <div id="explanation-box" class="mb-6 ${statusClass} border p-5 rounded-xl no-animation">
+                        <div class="flex items-start gap-3">
+                            <i data-lucide="${statusIcon}" class="${currentState.isCorrect ? 'text-green-600' : 'text-red-600'} shrink-0 mt-1 w-5 h-5"></i>
+                            <div>
+                                <h4 class="font-bold ${currentState.isCorrect ? 'text-green-800' : 'text-red-800'} mb-1">${statusText}</h4>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    <span class="font-semibold">Pembahasan:</span> ${q.explanation}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Main Question HTML
+            contentArea.innerHTML = `
+                <div class="max-w-2xl mx-auto w-full no-animation">
+                    <!-- Progress -->
+                    <div class="mb-6">
+                        <div class="flex justify-between text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">
+                            <span>Soal ${currentQuestion + 1} dari ${questions.length}</span>
+                            <span>${Math.round(((currentQuestion + 1) / questions.length) * 100)}% Selesai</span>
+                        </div>
+                        <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                            <div 
+                                class="bg-indigo-500 h-full rounded-full no-animation"
+                                style="width: ${((currentQuestion + 1) / questions.length) * 100}%"
+                            ></div>
+                        </div>
+                    </div>
+
+                    <!-- Question Card -->
+                    <div class="mb-8">
+                        <span class="inline-block bg-indigo-100 text-indigo-700 text-xs px-3 py-1 rounded-full font-bold mb-3 uppercase tracking-wider">
+                            ${q.category} • ${q.type === 'single' ? 'Pilgan Tunggal' : q.type === 'multiple' ? 'Pilgan Kompleks' : 'Benar/Salah Kompleks'}
+                        </span>
+                        <h2 class="text-lg md:text-xl font-medium leading-relaxed text-gray-800 whitespace-pre-wrap">
+                            ${q.question}
+                        </h2>
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="mb-8 space-y-3 input-area-container">
+                        ${inputHtml}
+                    </div>
+
+                    <!-- Explanation Box -->
+                    ${explanationHtml}
+                </div>
+            `;
+            
+            // Apply feedback to buttons if answered (using saved state), or restore selection if not
+            if (currentState.isAnswered) {
+                applyAnswerFeedback(q.type);
+            } else {
+                updateOptionsUI(q.type);
+            }
+
+
+            // Re-render lucide icons after injecting HTML
+            lucide.createIcons();
+            renderFooterActions(currentState.isAnswered);
+        };
+
+        const applyAnswerFeedback = (type) => {
+            const container = document.querySelector('.input-area-container');
+            if (!container) return;
+            const currentState = questionStates[currentQuestion];
+
+            if (type === 'single' || type === 'multiple') {
+                container.querySelectorAll('button').forEach(button => {
+                    const id = button.getAttribute('data-id');
+                    const isSelected = currentState.selectedOptions.includes(id);
+                    const isCorrect = questions[currentQuestion].correct.includes(id);
+                    
+                    // Disable all buttons
+                    button.disabled = true;
+
+                    // 1. Reset base classes
+                    button.className = button.className.replace(/bg-indigo-50|border-indigo-500|shadow-md|bg-white|border-gray-200|hover:border-indigo-300|hover:bg-gray-50/g, '').trim();
+
+                    // 2. Apply feedback class
+                    if (isCorrect) {
+                        button.className += ' bg-green-100 border-green-500 text-green-800';
+                        const icon = `<i data-lucide="check-circle" class="text-green-600 w-5 h-5"></i>`;
+                        button.querySelector('span:last-child').innerHTML = icon;
+
+                    } else if (isSelected && !isCorrect) {
+                        button.className += ' bg-red-100 border-red-500 text-red-800';
+                         const icon = `<i data-lucide="x-circle" class="text-red-600 w-5 h-5"></i>`;
+                        button.querySelector('span:last-child').innerHTML = icon;
+
+                    } else {
+                         button.className += ' bg-white border-gray-200 text-gray-500';
+                    }
+
+                    // 3. Update checkbox icon for multiple choice
+                    if (type === 'multiple') {
+                        const checkDiv = button.querySelector('.check-icon-container');
+                        if (checkDiv) {
+                            checkDiv.className = checkDiv.className.replace(/border-gray-400 text-gray-500|bg-indigo-500 border-indigo-500 text-white/g, '').trim();
+                            
+                            if (isCorrect) {
+                                checkDiv.className += ' bg-green-500 border-green-500 text-white';
+                            } else if (isSelected && !isCorrect) {
+                                checkDiv.className += ' bg-red-500 border-red-500 text-white';
+                            } else {
+                                checkDiv.className += ' border-gray-400 text-gray-500';
+                            }
+                            checkDiv.innerHTML = isCorrect ? `<i data-lucide="check-square" class="w-4 h-4"></i>` : `<i data-lucide="square" class="w-4 h-4"></i>`;
+                        }
+                    }
+                });
+            } else if (type === 'truefalse') {
+                container.querySelectorAll('.tf-group').forEach(group => {
+                    const idx = parseInt(group.getAttribute('data-index'));
+                    const userVal = currentState.tfAnswers[idx];
+                    const isStatementCorrect = questions[currentQuestion].statements[idx].isTrue;
+                    
+                    const btnTrue = group.querySelector('.btn-true');
+                    const btnFalse = group.querySelector('.btn-false');
+
+                    btnTrue.disabled = true;
+                    btnFalse.disabled = true;
+                    
+                    btnTrue.classList.remove('tf-correct', 'tf-wrong');
+                    btnFalse.classList.remove('tf-correct', 'tf-wrong');
+
+                    // True button feedback
+                    if (isStatementCorrect) { // Correct answer is TRUE
+                        btnTrue.classList.add('tf-correct');
+                    } else if (userVal === true) { // User chose TRUE, but correct is FALSE
+                        btnTrue.classList.add('tf-wrong');
+                    } else {
+                        btnTrue.classList.add('bg-gray-100', 'text-gray-400');
+                    }
+
+                    // False button feedback
+                    if (!isStatementCorrect) { // Correct answer is FALSE
+                        btnFalse.classList.add('tf-correct');
+                    } else if (userVal === false) { // User chose FALSE, but correct is TRUE
+                        btnFalse.classList.add('tf-wrong');
+                    } else {
+                        btnFalse.classList.add('bg-gray-100', 'text-gray-400');
+                    }
+                });
+            }
+             lucide.createIcons();
+        };
+
+        const renderFooterActions = (isAnswered) => {
+            let buttonHtml = '';
+            
+            // Tombol Kembali (Back)
+            const backButton = currentQuestion > 0 ? `
+                <button onclick="prevQuestion()" 
+                    class="flex items-center gap-2 bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-bold no-animation shadow-sm hover:bg-gray-300">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i> Kembali
+                </button>
+            ` : '';
+            
+            let mainActionButton = '';
+
+            if (!isAnswered) {
+                // Tentukan status tombol 'Kunci Jawaban'
+                const q = questions[currentQuestion];
+                let isDisabled = true;
+                
+                if (q.type === 'single' && selectedOptions.length === 1) isDisabled = false;
+                else if (q.type === 'multiple' && selectedOptions.length > 0) isDisabled = false;
+                else if (q.type === 'truefalse' && Object.keys(tfAnswers).length === q.statements.length) isDisabled = false;
+
+                mainActionButton = `
+                    <button onclick="checkAnswer()" ${isDisabled ? 'disabled' : ''}
+                        class="w-full md:w-auto bg-indigo-600 disabled:bg-gray-300 text-white px-8 py-3 rounded-xl font-bold no-animation shadow-md hover:bg-indigo-700 hover:shadow-lg disabled:cursor-not-allowed">
+                        Kunci Jawaban
+                    </button>
+                `;
+            } else {
+                mainActionButton = `
+                    <button onclick="nextQuestion()"
+                        class="w-full md:w-auto flex items-center justify-center gap-2 bg-indigo-600 text-white px-8 py-3 rounded-xl font-bold no-animation shadow-md hover:bg-indigo-700 hover:shadow-lg">
+                        ${currentQuestion === questions.length - 1 ? "Lihat Hasil" : "Soal Berikutnya"} 
+                        <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                    </button>
+                `;
+            }
+
+            footerActions.innerHTML = `
+                <div class="flex flex-1 justify-between items-center space-x-4">
+                    ${backButton}
+                    <div class="flex-grow"></div>
+                    ${mainActionButton}
+                </div>
+            `;
+            lucide.createIcons();
+        };
+
+        const renderResult = () => {
+            const finalScore = score;
+            const totalQuestions = questions.length;
+            const percentage = (finalScore / totalQuestions) * 100;
+            
+            let feedbackText = '';
+            if (percentage >= 80) {
+                feedbackText = "Luar Biasa! Pemahaman Anda tentang metodologi sejarah sangat mendalam.";
+            } else if (percentage >= 50) {
+                feedbackText = "Bagus! Tingkatkan lagi literasi dan analisis Anda, terutama pada konsep yang lemah.";
+            } else {
+                feedbackText = "Jangan menyerah! Baca kembali modul Asas dan Metode Sejarah. Anda pasti bisa!";
+            }
+
+            contentArea.innerHTML = `
+                <div class="h-full flex flex-col items-center justify-center text-center gap-6 no-animation">
+                    <i data-lucide="trophy" class="text-yellow-500 w-20 h-20"></i>
+                    <div>
+                        <h2 class="text-3xl font-bold text-gray-800 mb-2">Quiz Selesai!</h2>
+                        <p class="text-gray-500">Skor Akhir Anda:</p>
+                        <div class="text-6xl font-extrabold text-indigo-600 my-4 tracking-tight">
+                            ${finalScore} <span class="text-2xl text-gray-400 font-normal">/ ${totalQuestions}</span>
+                        </div>
+                        <div class="bg-indigo-50 px-6 py-3 rounded-xl inline-block text-indigo-700 font-medium">
+                            ${feedbackText}
+                        </div>
+                    </div>
+                    <button onclick="resetQuiz()" class="flex items-center gap-2 bg-indigo-600 text-white px-8 py-3 rounded-xl hover:bg-indigo-700 no-animation shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i> Ulangi Ujian
+                    </button>
+                </div>
+            `;
+            footerActions.innerHTML = '';
+            lucide.createIcons();
+        };
+
+        // --- Handler Functions (Called by inline onclick) ---
+
+        window.handleSelection = (id, type, value) => {
+            const currentState = questionStates[currentQuestion];
+            if (currentState.isAnswered) return; // Mencegah perubahan jika sudah dijawab
+
+            if (type === 'single') {
+                selectedOptions = [id];
+            } else if (type === 'multiple') {
+                if (selectedOptions.includes(id)) {
+                    selectedOptions = selectedOptions.filter(optId => optId !== id);
+                } else {
+                    selectedOptions.push(id);
+                }
+            } else if (type === 'truefalse') {
+                const index = parseInt(id);
+                tfAnswers[index] = value;
+            }
+            
+            // Simpan perubahan sementara ke state permanen (untuk keperluan navigasi bolak-balik)
+            currentState.selectedOptions = [...selectedOptions];
+            currentState.tfAnswers = {...tfAnswers};
+
+            // Panggil UI update tanpa full render (Ini memperbaiki flicker)
+            updateOptionsUI(questions[currentQuestion].type); 
+        };
+
+        window.checkAnswer = checkAnswer;
+        window.nextQuestion = nextQuestion;
+        window.resetQuiz = resetQuiz;
+
+        // Inisialisasi Quiz
+        document.addEventListener('DOMContentLoaded', () => {
+            resetQuiz();
+        });
+    </script>
+</body>
+</html>
